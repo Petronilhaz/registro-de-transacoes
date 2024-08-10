@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { TransactionsContext } from "../../Context/transationsContext";
 import Header from "../Header";
 import { Link } from "react-router-dom";
+import moment from "moment";
 import * as S from "./TransactionForm.style";
 interface IForm {
   type: string;
@@ -10,7 +11,7 @@ interface IForm {
   product: string;
   transactionValue: number;
   description: string;
-}
+  date: string,}
 
 const TransactionForm = () => {
   const { register, handleSubmit } = useForm<IForm>();
@@ -25,7 +26,7 @@ const TransactionForm = () => {
     addTransaction(data);
   };
 
-  useEffect(() => console.log("Transactions: ", transactions), [transactions]);
+  useEffect(() => console.log("Transactions: ", transactions, new Date().toLocaleDateString('pt-BR')), [transactions]);
   return (
     <>
       <Header title="Registrador de Transações" />
@@ -98,6 +99,14 @@ const TransactionForm = () => {
               />
             </S.InputContainer>
           </S.TableRow>
+
+          <S.InputContainer >
+              <S.Input hidden={true}
+                {...register("date")}
+                id="date"
+                value={moment(Date()).format('DD/MM/YYYY')}
+              />
+            </S.InputContainer>
 
           <S.ButtonContainer>
             <S.Button type="submit">Registrar Transação</S.Button>

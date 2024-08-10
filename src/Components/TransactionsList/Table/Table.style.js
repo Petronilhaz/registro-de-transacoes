@@ -20,6 +20,7 @@ export const HeaderContainer = styled.div`
 `
 
 export const Header = styled.h3`
+  font-size: 1.1rem;
   text-align: center;
   justify-self: center;
   padding: 0.5rem 0;
@@ -32,6 +33,7 @@ export const DataContainer = styled.div`
 `
 
 export const TableRow = styled.div`
+  font-size: 1rem;
   text-align: center;
   border-top: 1px solid black;
   padding: 0.2rem 0;
@@ -44,7 +46,7 @@ export const ButtonContainer = styled.div`
 export const Button = styled.button`
     padding: 7px;
     margin: 10px;
-    font-size: 12px;
+    font-size: 1rem;
     font-weight: bold;
     border: 2px solid green;
     border-radius: 10px;

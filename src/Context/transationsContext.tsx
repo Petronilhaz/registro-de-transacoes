@@ -1,12 +1,12 @@
 import { ReactNode, createContext, useState } from "react";
 
-interface ITransaction {
+export interface ITransaction {
     type: string,
     author: string,
     product: string,
     transactionValue: number,
     description?: string,
-    date?: number,
+    date?: string,
 }
 
 interface TransationsContextProps {
