@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState } from "react";
+import { ReactNode, createContext, useEffect, useState } from "react";
 
 export interface ITransaction {
     type: string,
@@ -11,18 +11,27 @@ export interface ITransaction {
 
 interface TransationsContextProps {
     transactions: ITransaction[],
-    addTransaction: (newTransation: ITransaction) => void
+    addTransaction: (newTransation: ITransaction) => void,
+    setTransactions: (transactions: ITransaction[])=> void
 }
 
 const initialValues = {
     transactions: [],
-    addTransaction: () => {}
+    addTransaction: () => {},
+    setTransactions: () => {}
 }
 
 export const TransactionsContext = createContext<TransationsContextProps>(initialValues)
 
 export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [transactions, setTransactions] = useState<ITransaction[]>([])
+    
+    useEffect(() => {
+        localStorage.setItem("localTransactions", JSON.stringify(transactions));
+    }, [transactions]);
+
+    console.log("Local: ", localStorage.getItem("localTransactions"))
+
 
     const addTransaction = (newTransaction: ITransaction) => {
         setTransactions((prevTransactions) => [...prevTransactions, newTransaction])
@@ -30,7 +39,8 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
     const ContextValue = {
         transactions,
-        addTransaction
+        addTransaction,
+        setTransactions
     }
 
    return (

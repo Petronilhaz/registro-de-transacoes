@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { TransactionsContext } from "../../../Context/transationsContext";
 import { Link } from "react-router-dom";
 import * as S from "./Table.style";
 import { ITransaction } from "../../../Context/transationsContext"
 const Table = () => {
-  const { transactions } = useContext(TransactionsContext);
+  const { transactions, setTransactions } = useContext(TransactionsContext);
 
 function renderRow(rowProp: keyof ITransaction) {
   return(
