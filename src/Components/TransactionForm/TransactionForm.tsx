@@ -1,120 +1,178 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { TransactionsContext } from "../../Context/transationsContext";
 import Header from "../Header";
+import {
+  Button,
+  InputAdornment,
+  TextField,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Container,
+} from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import * as S from "./TransactionForm.style";
-interface IForm {
-  type: string;
-  author: string;
-  product: string;
-  transactionValue: number;
-  description: string;
-  date: string;
-}
+import PersonIcon from "@mui/icons-material/Person";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import ArticleIcon from "@mui/icons-material/Article";
+import { ITransaction } from "../../Context/transationsContext";
 
 const TransactionForm = () => {
-  const { register, handleSubmit } = useForm<IForm>();
-  const { transactions, addTransaction } = useContext(TransactionsContext);
+  const { register, handleSubmit } = useForm<ITransaction>();
+  const { addTransaction } = useContext(TransactionsContext);
   const [isShowing, setIsShowing] = useState<boolean>(true);
 
   function ShowOrHideInputs(isShowing: boolean) {
     setIsShowing(isShowing);
   }
 
-  const onSubmit: SubmitHandler<IForm> = (data) => {
+  const onSubmit: SubmitHandler<ITransaction> = (data) => {
     addTransaction(data);
   };
 
-  //useEffect(() => console.log("Transactions: ", transactions, new Date().toLocaleDateString('pt-BR')), [transactions]);
   return (
     <>
       <Header title="Registrador de Transações" />
+      {/* Zerar produto apos retornar para a opcao de entrada */}
+     <section>
+      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
 
-      <form onSubmit={handleSubmit(onSubmit)}>        
-        <S.TypeInputContainer>
-          <S.TypeParagraph>Tipo de Transação</S.TypeParagraph>
-          <S.EntryLabel>
-            Entrada
-            <S.RadioSelector
-              onClick={() => ShowOrHideInputs(true)}
-              {...register("type")}
-              type="radio"
+        <Container sx={{ margin: "1rem 0 1rem 1rem" }}>
+          <FormLabel
+          id="demo-row-radio-buttons-group-label"
+          sx={{fontSize: "1.2rem",
+            fontWeight: "bold",
+            color: "black"
+          }}>
+            Tipo de Transacao
+          </FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby="demo-row-radio-buttons-group-label"
+            name="type"
+          >
+            <FormControlLabel
+            {...register("type")}
+              required
               name="type"
               value="entry"
-              required
+              control={<Radio />}
+              label="Entrada"
+              onClick={() => ShowOrHideInputs(true)}
             />
-          </S.EntryLabel>
-          <S.ExitLabel>
-            Saída
-            <S.RadioSelector
-              onClick={() => ShowOrHideInputs(false)}
-              {...register("type")}
-              type="radio"
+            <FormControlLabel
+            {...register("type")}
+              required
               name="type"
               value="exit"
-              required
+              control={<Radio />}
+              label="Saida"
+              onClick={() => ShowOrHideInputs(false)}
             />
-          </S.ExitLabel>
-        </S.TypeInputContainer>
+          </RadioGroup>
+        </Container>
 
-        <S.TableRow>
-          <S.InputContainer>
-            <S.Label htmlFor="author">Nome</S.Label>
-            <S.Input
-              {...register("author")}
+        <Grid container spacing={2} maxWidth="75vw" margin="0 1rem">
+          <Grid size={6} >
+            <TextField
+              fullWidth
+              autoComplete="on"
               id="author"
-              placeholder="Autor da Transação"
+              label="Autor da Transacao"
+              variant="outlined"
+              {...register("author")}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PersonIcon />
+                    </InputAdornment>
+                  ),
+                },
+              }}
             />
-          </S.InputContainer>
-
-          <S.InputContainer>
-            <S.Label hidden={isShowing} htmlFor="product">
-              Produto
-            </S.Label>
-            <S.Input
-              hidden={isShowing}
-              {...register("product")}
+          </Grid>
+          <Grid size={6} hidden={isShowing}>
+            <TextField
+              fullWidth
               id="product"
-              placeholder="Nome do Produto"
+              label="Produto"
+              variant="outlined"
+              {...register("product")}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <ShoppingBagIcon />
+                    </InputAdornment>
+                  ),
+                },
+              }}
             />
-          </S.InputContainer>
-        </S.TableRow>
-        <S.TableRow>
-          <S.InputContainer>
-            <S.Label htmlFor="price">Valor</S.Label>
-            <S.Input
-              {...register("transactionValue")}
+          </Grid>
+
+          <Grid size={6}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Valor"
               id="transactioValue"
-              placeholder="Valor da Transação"
+              {...register("transactionValue")}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AttachMoneyIcon />
+                    </InputAdornment>
+                  ),
+                },
+              }}
             />
-          </S.InputContainer>
-
-          <S.InputContainer>
-            <S.Label htmlFor="description">Descrição</S.Label>
-            <S.Input
-              {...register("description")}
+          </Grid>
+          <Grid size={6}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Descricao(Opcional)"
               id="description"
-              placeholder="(Opcional)"
+              {...register("description")}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <ArticleIcon />
+                    </InputAdornment>
+                  ),
+                },
+              }}
             />
-          </S.InputContainer>
-        </S.TableRow>
+          </Grid>
+        </Grid>
 
-        <S.Input
-          hidden={true}
+        <Container hidden>
+          <TextField
           {...register("date")}
           id="date"
-          value={moment(Date()).format("DD/MM/YYYY")}
-        ></S.Input>
+          value={moment(Date()).format("DD/MM/YYYY")} />
+        </Container>
 
-        <S.ButtonContainer>
-          <S.Button type="submit">Registrar Transação</S.Button>
+        <section style={S.ButtonContainer}>
+          <Button variant="contained" type="submit" >
+            Registrar Transacao
+          </Button>
           <Link to="/list">
-            <S.Button type="button">Ver Lista</S.Button>
+            <Button variant="contained" sx={{ marginLeft: "1rem" }}>
+              Ver Transacoes
+            </Button>
           </Link>
-        </S.ButtonContainer>
+        </section>
       </form>
+     </section> 
     </>
   );
 };

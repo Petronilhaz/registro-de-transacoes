@@ -1,7 +1,7 @@
 import TransactionForm from './Components/TransactionForm'
 import TransactionsList from './Components/TransactionsList';
 import { TransactionsProvider } from './Context/transationsContext';
-import './App.css';
+//import './App.css';
 import {
   BrowserRouter as Router,
   Routes,
