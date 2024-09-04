@@ -44,13 +44,11 @@ const Table = () => {
   }
 
   function renderTopic(topic: string, paragraph: string | undefined) {
-    return (
-      <Typography>
-        {topic}:{" "}
+    return (   
         <Typography>
-          {paragraph === undefined ? " Nao definido" : paragraph}
+          {topic + ": "}
+          {paragraph === undefined || paragraph === "" ? " Não definido" : paragraph}
         </Typography>
-      </Typography>
     );
   }
 
